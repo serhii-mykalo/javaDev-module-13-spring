@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>List notes</title>
+</head>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+<body>
+<h2 class="container">List notes</h2>
+<ul class="list-group list-group-flush container col-10" th:each="note : ${notes}">
+    <li class="list-group-item" th:text="'id: ' + ${note.id}"></li>
+    <li class="list-group-item" th:text="'Title: ' + ${note.title}"></li>
+    <li class="list-group-item" th:text="'Content: ' + ${note.content}"></li>
+    <li class="list-group-item">
+        <a class="btn btn-outline-primary btn-sm" th:href="'http://localhost:8080/test/edit?id=' + ${note.id}">Update</a>
+        <button class="btn btn-primary btn-sm" th:href="'http://localhost:8080/test/delete?id=' + ${note.id}">Delete</button>
+    </li>
+    </ul>
+<form action="/test/delete" method="post">
+    <div>
+        <label for="id-for-delete">Id for delete:</label>
+        <input type="text" name="id" id="id-for-delete"/>
+    </div>
+
+    <div>
+        <button type="submit"  class="btn btn-primary margin-bottom 2">Delete</button>
+    </div>
+</form>
+</body>
+</html>
