@@ -1,6 +1,7 @@
 package com.example.data.repository;
 
 import com.example.data.entity.Note;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -48,5 +49,21 @@ public class NoteRepository {
                 .filter(note -> note.getId().equals(id))
                 .findFirst()
                 .ifPresent(this.notes::remove);
+    }
+
+    @PostConstruct
+    public void init() {
+        Note noteOne = new Note();
+        noteOne.setTitle("Title note 1");
+        noteOne.setContent("Content note 1");
+        Note noteTwo = new Note();
+        noteTwo.setTitle("Title note 2");
+        noteTwo.setContent("Content note 2");
+        Note noteThree = new Note();
+        noteThree.setTitle("Title note 3");
+        noteThree.setContent("Content note 3");
+        save(noteOne);
+        save(noteTwo);
+        save(noteThree);
     }
 }
