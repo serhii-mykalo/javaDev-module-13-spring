@@ -29,7 +29,7 @@ public class NoteController {
     @Autowired private NoteMapper noteMapper;
 
     @GetMapping
-    public String mainPage(Model model) throws NoteNotFoundException {
+    public String getMainPage(Model model) throws NoteNotFoundException {
         model.addAttribute("notes", noteMapper.toNoteResponses(noteService.findAll()));
         return "notes/mainNotePage";
     }
