@@ -12,40 +12,41 @@ import jakarta.validation.constraints.Size;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.UUID;
 
 @Slf4j
 @Validated
 @Controller
-@RequestMapping("/test")
-public class TestController {
+@RequestMapping("/note")
+public class NoteController {
     @Autowired
     private NoteService noteService;
     @Autowired private NoteMapper noteMapper;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView testPage() throws NoteNotFoundException {
-        ModelAndView result =  new ModelAndView("notes/test");
-        result.addObject("notes", noteMapper.toNoteResponses(noteService.findAll()));
-        return result;
+    @GetMapping
+    public String mainPage(Model model) throws NoteNotFoundException {
+        model.addAttribute("notes", noteMapper.toNoteResponses(noteService.findAll()));
+        return "notes/mainNotePage";
     }
 
-    @RequestMapping(value = "/create", method = {RequestMethod.POST})
-    public ModelAndView createNote(
-            @RequestParam(value="title") @Size(min = 1, max = 250) String title,
-            @RequestParam(value="content") @NotBlank String content) throws NoteNotFoundException {
+    @PostMapping("/create")
+    public String createNote(
+            @RequestParam(value = "title") @Size(min = 1, max = 250) String title,
+            @RequestParam(value = "content") @NotBlank String content,
+            RedirectAttributes redirectAttributes) throws NoteNotFoundException {
         NoteDto dto = new NoteDto();
         dto.setTitle(title);
         dto.setContent(content);
         noteService.save(dto);
-        return testPage();
+
+        redirectAttributes.addFlashAttribute("successMessage", "Note created successfully");
+        return "redirect:/note";
     }
 
     @RequestMapping(value = "/list", method = {RequestMethod.GET})
