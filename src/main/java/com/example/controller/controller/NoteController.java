@@ -5,7 +5,6 @@ import com.example.service.exception.NoteNotFoundException;
 import com.example.service.mapper.NoteMapper;
 import com.example.service.service.NoteService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -36,7 +35,7 @@ public class NoteController {
     }
 
     @PostMapping("/create")
-    public String createNote(@ModelAttribute @Valid NoteDto noteDto, RedirectAttributes redirectAttributes) throws NoteNotFoundException {
+    public String createNote(@ModelAttribute @Valid NoteDto noteDto, RedirectAttributes redirectAttributes) {
         noteService.save(noteDto);
         redirectAttributes.addFlashAttribute("successMessage", "Note created successfully");
         return "redirect:/note";
