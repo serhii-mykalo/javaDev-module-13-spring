@@ -36,15 +36,8 @@ public class NoteController {
     }
 
     @PostMapping("/create")
-    public String createNote(
-            @RequestParam(value = "title") @Size(min = 1, max = 250) String title,
-            @RequestParam(value = "content") @NotBlank String content,
-            RedirectAttributes redirectAttributes) throws NoteNotFoundException {
-        NoteDto dto = new NoteDto();
-        dto.setTitle(title);
-        dto.setContent(content);
-        noteService.save(dto);
-
+    public String createNote(@ModelAttribute @Valid NoteDto noteDto, RedirectAttributes redirectAttributes) throws NoteNotFoundException {
+        noteService.save(noteDto);
         redirectAttributes.addFlashAttribute("successMessage", "Note created successfully");
         return "redirect:/note";
     }
